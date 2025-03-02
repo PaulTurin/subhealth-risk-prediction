@@ -7,7 +7,7 @@ import matplotlib.font_manager as fm
 import requests
 import os
 
-font_url = "https://raw.githubusercontent.com/PaulTurin/subhealth-risk-prediction/master/SimHei.ttf"
+font_url = "https://github.com/PaulTurin/subhealth-risk-prediction/blob/master/SimHei.ttf"
 font_path = os.path.join(os.getcwd(), "SimHei.ttf")
 
 if not os.path.exists(font_path):
