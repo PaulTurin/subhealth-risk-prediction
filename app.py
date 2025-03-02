@@ -5,20 +5,11 @@ import shap
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 import requests
-import os
 
-
-font_path = 'SimHei.ttf'
-font_prop = fm.FontProperties(fname=font_path)
-
-
-plt.rcParams['font.family'] = font_prop.get_name()
-plt.rcParams['axes.unicode_minus'] = False
-
-    
-
+# 加载模型
 model = joblib.load('risk_prediction_model.pkl')
 
+# 定义分类特征
 categorical_features = {
     '兴趣爱好': {
         'labels': ['没有', '一般（拥有1 - 3个兴趣爱好）', '广泛（拥有大于3个兴趣爱好）'],
@@ -59,6 +50,7 @@ categorical_features = {
     }
 }
 
+# 问题顺序
 question_order = [
     '年龄',
     '户籍类型',
@@ -72,9 +64,25 @@ question_order = [
     '近期重大生活事件（近半年）'
 ]
 
+# 中英文变量名映射
+chinese_to_english = {
+    '年龄': 'Age',
+    '户籍类型': 'Household Registration Type',
+    '居住环境舒适度': 'Residential Environment Comfort',
+    '兴趣爱好': 'Hobbies',
+    '性格类型': 'Personality Type',
+    '体育锻炼': 'Physical Exercise',
+    '睡眠持续时长': 'Sleep Duration',
+    '不良饮食习惯': 'Unhealthy Eating Habits',
+    '网络使用（非工作学习需要）': 'Internet Use (Non - Work/Study)',
+    '近期重大生活事件（近半年）': 'Major Life Events in Recent Half - Year'
+}
+
+# 页面标题和介绍
 st.write("## 亚健康风险预测工具")
 st.write("本工具由南方医科大学许军教授课题组研发，内核采用CatBoost机器学习算法，结合课题组自主研发的SHMS V1.0量表和构建的CURSCS数据库，为您提供科学、精准的亚健康风险评估服务。只需简单输入您的个人信息和生活习惯，即可快速获取个性化的健康风险等级评估，并获得健康建议，助您轻松掌握健康主动权！")
 
+# 获取用户输入
 input_features = []
 valid_selection = True
 
@@ -148,6 +156,7 @@ for feature_name in question_order:
         feature_value = st.number_input(f"请输入{feature_name}", value=0.0)
         input_features.append(feature_value)
 
+# 进行风险预测和分析
 if valid_selection and st.button("风险预测"):
     try:
         input_features = np.array(input_features).reshape(1, -1)
@@ -175,13 +184,16 @@ if valid_selection and st.button("风险预测"):
         explainer = shap.TreeExplainer(model)
         shap_values = explainer.shap_values(input_features)
 
+        # 将中文特征名转换为英文
+        english_question_order = [chinese_to_english[feature] for feature in question_order]
+
         fig, ax = plt.subplots()
         shap.waterfall_plot(
             shap.Explanation(
                 values=shap_values[0],
                 base_values=explainer.expected_value,
                 data=input_features[0],
-                feature_names=question_order
+                feature_names=english_question_order
             ),
             show=False
         )
@@ -195,5 +207,6 @@ if valid_selection and st.button("风险预测"):
     except Exception as e:
         st.error(f"预测或分析过程中出现错误：{e}")
 
+# 声明信息
 declaration_text = "声明：以上内容仅代表基于规模人群数据的规律性结果，可能与个人实际情况存在差异，因此仅作为一般性参考，不可替代专业医疗建议。如需了解个人健康状况，请咨询专业医生或健康管理师，以获得针对性的指导和建议。本工具由许军教授课题组硕士研究生刘琛主要负责开发，目前处于测试阶段，其所有权归属于许军教授课题组。该工具现仅作为刘琛本人硕士毕业论文展示使用，未经许可，任何个人或组织不得将其用于商业用途或公开发布。本工具所涉及的代码、算法、模型等相关内容均受版权法保护，未经授权，禁止任何形式的复制、修改、传播或用于其他目的。如有任何疑问或需要进一步了解，请联系liuchen_scires@sina.cn。"
 st.markdown(f"<span style='color:red;'><small>{declaration_text}</small></span>", unsafe_allow_html=True)
