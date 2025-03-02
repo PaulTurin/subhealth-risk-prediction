@@ -4,17 +4,25 @@ import joblib
 import shap
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
+import requests
+import os
+
+font_url = "https://raw.githubusercontent.com/your_username/your_repository/main/SimHei.ttf"
+font_path = os.path.join(os.getcwd(), "SimHei.ttf")
+
+if not os.path.exists(font_path):
+    try:
+        response = requests.get(font_url)
+        with open(font_path, 'wb') as f:
+            f.write(response.content)
+    except Exception as e:
+        st.warning(f"下载字体文件时出现错误：{e}")
 
 try:
-    plt.rcParams['font.family'] = 'SimHei'
-except ValueError:
-    try:
-        plt.rcParams['font.family'] = 'Songti SC'
-    except ValueError:
-        try:
-            plt.rcParams['font.family'] = 'Hiragino Sans'
-        except ValueError:
-            st.warning("未找到合适的中文字体，请检查系统字体设置。")
+    font = fm.FontProperties(fname=font_path)
+    plt.rcParams['font.family'] = font.get_name()
+except Exception as e:
+    st.warning(f"加载字体文件时出现错误：{e}")
 
 plt.rcParams['axes.unicode_minus'] = False
 
