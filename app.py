@@ -5,7 +5,17 @@ import shap
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 
-plt.rcParams['font.family'] = 'SimHei'
+try:
+    plt.rcParams['font.family'] = 'SimHei'
+except ValueError:
+    try:
+        plt.rcParams['font.family'] = 'Songti SC'
+    except ValueError:
+        try:
+            plt.rcParams['font.family'] = 'Hiragino Sans'
+        except ValueError:
+            st.warning("未找到合适的中文字体，请检查系统字体设置。")
+
 plt.rcParams['axes.unicode_minus'] = False
 
 model = joblib.load('risk_prediction_model.pkl')
