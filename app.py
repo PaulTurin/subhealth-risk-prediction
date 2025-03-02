@@ -7,24 +7,15 @@ import matplotlib.font_manager as fm
 import requests
 import os
 
-font_url = "https://github.com/PaulTurin/subhealth-risk-prediction/blob/master/SimHei.ttf"
-font_path = os.path.join(os.getcwd(), "SimHei.ttf")
 
-if not os.path.exists(font_path):
-    try:
-        response = requests.get(font_url)
-        with open(font_path, 'wb') as f:
-            f.write(response.content)
-    except Exception as e:
-        st.warning(f"下载字体文件时出现错误：{e}")
+font_path = 'SimHei.ttf'
+font_prop = fm.FontProperties(fname=font_path)
 
-try:
-    font = fm.FontProperties(fname=font_path)
-    plt.rcParams['font.family'] = font.get_name()
-except Exception as e:
-    st.warning(f"加载字体文件时出现错误：{e}")
 
+plt.rcParams['font.family'] = font_prop.get_name()
 plt.rcParams['axes.unicode_minus'] = False
+
+    
 
 model = joblib.load('risk_prediction_model.pkl')
 
