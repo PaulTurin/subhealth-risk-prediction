@@ -5,20 +5,10 @@ import shap
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 
-font_path = 'STHeiti Medium.ttc'
-prop = fm.FontProperties(fname=font_path)
-plt.rcParams['font.family'] = prop.get_name()
+plt.rcParams['font.family'] = 'SimHei'
 plt.rcParams['axes.unicode_minus'] = False
 
 model = joblib.load('risk_prediction_model.pkl')
-
-def get_optimal_threshold(y_true, y_proba):
-    from sklearn.metrics import roc_curve
-    fpr, tpr, thresholds = roc_curve(y_true, y_proba)
-    youden_index = tpr - fpr
-    optimal_idx = np.argmax(youden_index)
-    optimal_threshold = thresholds[optimal_idx]
-    return optimal_threshold
 
 categorical_features = {
     '兴趣爱好': {
@@ -192,6 +182,8 @@ if valid_selection and st.button("风险预测"):
 
     st.markdown(f"<small>{explanation_text_1}</small>", unsafe_allow_html=True)
     st.markdown(f"<small>{explanation_text_2}</small>", unsafe_allow_html=True)
+except Exception as e:
+        st.error(f"预测或分析过程中出现错误：{e}")
 
 declaration_text = "声明：以上内容仅代表基于规模人群数据的规律性结果，可能与个人实际情况存在差异，因此仅作为一般性参考，不可替代专业医疗建议。如需了解个人健康状况，请咨询专业医生或健康管理师，以获得针对性的指导和建议。本工具由许军教授课题组硕士研究生刘琛主要负责开发，目前处于测试阶段，其所有权归属于许军教授课题组。该工具现仅作为刘琛本人硕士毕业论文展示使用，未经许可，任何个人或组织不得将其用于商业用途或公开发布。本工具所涉及的代码、算法、模型等相关内容均受版权法保护，未经授权，禁止任何形式的复制、修改、传播或用于其他目的。如有任何疑问或需要进一步了解，请联系liuchen_scires@sina.cn。"
 st.markdown(f"<span style='color:red;'><small>{declaration_text}</small></span>", unsafe_allow_html=True)
