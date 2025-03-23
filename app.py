@@ -12,7 +12,7 @@ model = joblib.load('risk_prediction_model.pkl')
 # 定义分类特征
 categorical_features = {
     '兴趣爱好': {
-        'labels': ['没有', '一般（拥有1 - 3个兴趣爱好）', '广泛（拥有大于3个兴趣爱好）'],
+        'labels': ['没有', '一般（拥有1-3个兴趣爱好）', '广泛（拥有大于3个兴趣爱好）'],
         'values': [2, 1, 0]
     },
     '性格类型': {
@@ -20,7 +20,7 @@ categorical_features = {
         'values': [1, 1, 1, 0]
     },
     '不良饮食习惯': {
-        'labels': ['饮食时间不规律', '节食', '暴饮暴食', '偏食挑食', '口味偏咸', '以零食替代正餐', '以上都没有'],
+        'labels': ['饮食时间不规律', '节食', '暴饮暴食', '偏食挑食', '饮食偏咸', '以零食替代正餐', '以上都没有'],
         'values': [1, 1, 1, 1, 1, 1, 0]
     },
     '体育锻炼': {
@@ -35,7 +35,7 @@ categorical_features = {
         'labels': ['小于1小时/天', '1～4小时/天', '大于4小时/天'],
         'values': [2, 1, 0]
     },
-    '户籍类型': {
+    '户籍地类型': {
         'labels': ['农村', '城镇', '三、四线城市', '一、二线城市'],
         'values': [0, 1, 2, 3]
     },
@@ -53,7 +53,7 @@ categorical_features = {
 # 问题顺序
 question_order = [
     '年龄',
-    '户籍类型',
+    '户籍地类型',
     '居住环境舒适度',
     '兴趣爱好',
     '性格类型',
@@ -67,7 +67,7 @@ question_order = [
 # 中英文变量名映射
 chinese_to_english = {
     '年龄': 'Age',
-    '户籍类型': 'Household Registration Type',
+    '户籍地类型': 'Household Registration Type',
     '居住环境舒适度': 'Residential Environment Comfort',
     '兴趣爱好': 'Hobbies',
     '性格类型': 'Personality Type',
