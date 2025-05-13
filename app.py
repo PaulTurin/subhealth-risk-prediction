@@ -31,7 +31,7 @@ categorical_features = {
         'labels': ['小于7小时/天', '大于7小时/天'],
         'values': [0, 1]
     },
-    '网络使用（非工作学习需要）': {
+    '网络使用时长（非工作学习需要）': {
         'labels': ['小于1小时/天', '1～4小时/天', '大于4小时/天'],
         'values': [2, 1, 0]
     },
@@ -60,7 +60,7 @@ question_order = [
     '体育锻炼',
     '睡眠持续时长',
     '不良饮食习惯',
-    '网络使用（非工作学习需要）',
+    '网络使用时长（非工作学习需要）',
     '近期重大生活事件（近半年）'
 ]
 
@@ -74,7 +74,7 @@ chinese_to_english = {
     '体育锻炼': 'Physical Exercise',
     '睡眠持续时长': 'Sleep Duration',
     '不良饮食习惯': 'Unhealthy Eating Habits',
-    '网络使用（非工作学习需要）': 'Internet Use (Non - Work/Study)',
+    '网络使用时长（非工作学习需要）': 'Internet Use (Non - Work/Study)',
     '近期重大生活事件（近半年）': 'Major Life Events in Recent Half - Year'
 }
 
